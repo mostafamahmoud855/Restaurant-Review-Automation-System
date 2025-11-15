@@ -1,0 +1,197 @@
+{
+  "name": "Submission Form",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Resturant Review",
+        "formDescription": "Write Your Review",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "ID",
+              "fieldType": "number",
+              "placeholder": "Ex: 2518",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Name",
+              "placeholder": "Ex.Mostafa Mahmoud",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Phone",
+              "fieldType": "number",
+              "placeholder": "Ex: 01270422190",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Email",
+              "fieldType": "email",
+              "placeholder": "Ex: xyz@gmail.com",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Review",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  { "option": "Excellent" },
+                  { "option": "Good" },
+                  { "option": "Bad" }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Message",
+              "fieldType": "textarea",
+              "placeholder": "Write Your Review"
+            }
+          ]
+        },
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.3,
+      "position": [-368, -224],
+      "id": "FORM_TRIGGER_NODE",
+      "name": "On form submission",
+      "webhookId": "YOUR_WEBHOOK_ID_HERE"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "YOUR_AIRTABLE_BASE_ID",
+          "mode": "list"
+        },
+        "table": {
+          "__rl": true,
+          "value": "YOUR_AIRTABLE_TABLE_ID",
+          "mode": "list"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ID": "={{ $json.ID }}",
+            "Name": "={{ $json.Name }}",
+            "Phone": "={{ $json.Phone }}",
+            "Email": "={{ $json.Email }}",
+            "Review": "={{ $json.Review }}",
+            "Message": "={{ $json.Message }}"
+          },
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [-160, -192],
+      "id": "CREATE_RECORD_NODE",
+      "name": "Create a record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "YOUR_AIRTABLE_TOKEN_PLACEHOLDER",
+          "name": "Airtable Token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.fields.Review }}",
+              "rightValue": "Good",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "leftValue": "={{ $json.fields.Review }}",
+              "rightValue": "Bad",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [32, -192],
+      "id": "IF_NODE",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "sendTo": "YOUR_EMAIL_HERE",
+        "subject": "=complaint Review {{ $json.fields.ID }}",
+        "emailType": "text",
+        "message": "=Name Customer : {{ $json.fields.Name }}\nOrder Number : {{ $json.fields.ID }}\nPhone Number : {{ $json.fields.Phone }}\nReview : {{ $json.fields.Review }}\nMessage : {{ $json.fields.Message }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [272, -192],
+      "id": "SEND_EMAIL_NODE",
+      "name": "Send a message",
+      "webhookId": "YOUR_GMAIL_WEBHOOK_ID",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YOUR_GMAIL_OAUTH_ID",
+          "name": "Gmail OAuth"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          { "node": "Create a record", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "Create a record": {
+      "main": [
+        [
+          { "node": "If", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          { "node": "Send a message", "type": "main", "index": 0 }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1" },
+  "versionId": "SAFE_VERSION",
+  "meta": {
+    "templateCredsSetupCompleted": false,
+    "instanceId": "INSTANCE_PLACEHOLDER"
+  },
+  "id": "WORKFLOW_ID",
+  "tags": []
+}
