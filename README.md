@@ -1,5 +1,7 @@
-A modern and automated web application for collecting and managing restaurant reviews.
+🍽️✨ A modern, smart, and automated web application for collecting, organizing, and managing restaurant reviews.
+
 🚀 Overview
+
 This app allows users to submit their feedback about a restaurant, and the system automatically stores the data, processes it, and sends notifications based on the type of review.
 
 🖼️ Main Form
