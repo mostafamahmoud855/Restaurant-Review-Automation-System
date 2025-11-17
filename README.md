@@ -3,7 +3,7 @@ A modern and automated web application for collecting and managing restaurant re
 This app allows users to submit their feedback about a restaurant, and the system automatically stores the data, processes it, and sends notifications based on the type of review.
 
 🖼️ Main Form
-(![Resturant Review](Resturant%20Review%20.png))
+![Resturant Review](Resturant%20Review%20.png)
 
 📨 Review Message Example
 ![Message](Message.png)
