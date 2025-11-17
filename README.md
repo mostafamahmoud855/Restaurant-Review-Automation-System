@@ -1,21 +1,40 @@
-# Restaurant Review Web App
+A modern and automated web application for collecting and managing restaurant reviews.
+🚀 Overview
+This app allows users to submit their feedback about a restaurant, and the system automatically stores the data, processes it, and sends notifications based on the type of review.
 
-A web application for submitting and viewing restaurant reviews.
+🖼️ Main Form
+(![Resturant Review](Resturant%20Review%20.png))
 
-## Features
-- Users can submit their reviews including:
-  - ID
-  - Name
-  - Phone
-  - Email
-  - Review (Excellent, Good, Bad)
-  - Message 
-- Reviews are stored in a database (Airtable used in workflow)
-- Sends an email notification for "Good" or "Bad" reviews
-- Built using n8n automation for form handling and email notifications
+📨 Review Message Example
+![Message](Message.png)
 
-## Tech Stack
-- **n8n** for workflow automation
-- **Airtable** for database storage
-- **Gmail API** for email notifications
-- JSON/JavaScript for form handling
+⭐ Features
+Users can submit reviews containing:
+- ID
+- Name
+- Phone
+- Email
+- Review Type (Excellent / Good / Bad)
+- Message
+
+**Stores all reviews automatically in Airtable**
+
+**Sends email notifications for Good or Bad reviews**
+
+Integrates with n8n automation to process and route reviews
+
+🛠️ Tech Stack
+n8n – workflow automation & email triggers
+Airtable – cloud database
+Gmail API – email notifications
+HTML / CSS / JS – UI form
+JSON – data formatting
+
+Optional integration: GitHub LFS for media files
+
+📡 Workflow (n8n)
+Form submission → Sent to n8n
+n8n validates inputs
+Saves the record in Airtable
+Sends email notification based on review type
+Logs the activity for analytics
